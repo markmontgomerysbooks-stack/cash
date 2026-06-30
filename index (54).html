@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Can Connect — كان كونكت</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-600: #0F6E56; --teal-800: #085041;
+    --blue-50: #E6F1FB; --blue-600: #185FA5; --blue-800: #0C447C;
+    --sand: #FAF7F2; --sand-dark: #F0EBE0;
+    --text: #1C1C1A; --text-muted: #5F5E5A; --text-light: #888780;
+    --border: rgba(0,0,0,0.12); --border-strong: rgba(0,0,0,0.22);
+    --radius: 14px; --radius-sm: 8px;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; line-height: 1.6; }
+
+  .site-header { background: #fff; border-bottom: 1px solid var(--border); padding: 1.1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
+  .logo { font-size: 18px; font-weight: 600; color: var(--teal-600); letter-spacing: -0.02em; }
+  .logo span { color: var(--blue-600); }
+  .logo-ar { font-family: 'Amiri', serif; font-size: 15px; color: var(--text-muted); direction: rtl; }
+
+  .hero { max-width: 640px; margin: 0 auto; padding: 3rem 1.5rem 1.5rem; text-align: center; animation: fadeUp 0.5s ease both; }
+  .hero-icon { font-size: 48px; margin-bottom: 1rem; }
+  .hero h1 { font-size: clamp(24px, 5vw, 34px); font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .hero h1 span { color: var(--teal-600); }
+  .hero-ar { font-family: 'Amiri', serif; font-size: 20px; color: var(--text-muted); direction: rtl; margin-bottom: 1.25rem; }
+  .hero p { font-size: 15px; color: var(--text-muted); max-width: 480px; margin: 0 auto 0.5rem; }
+  .hero p.arabic { font-family: 'Amiri', serif; font-size: 14px; direction: rtl; color: var(--text-light); }
+
+  .how-banner { max-width: 640px; margin: 1.5rem auto; padding: 0 1.5rem; animation: fadeUp 0.5s 0.1s ease both; }
+  .how-inner { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; }
+  .how-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal-600); margin-bottom: 10px; }
+  .how-steps { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 12px; }
+  .how-step { flex: 1; min-width: 130px; background: var(--sand); border-radius: var(--radius-sm); padding: 0.75rem; font-size: 13px; color: var(--text-muted); }
+  .how-step strong { display: block; font-size: 12px; color: var(--teal-600); font-weight: 600; margin-bottom: 3px; }
+  .how-ar { font-family: 'Amiri', serif; font-size: 13px; color: var(--text-light); direction: rtl; border-top: 1px solid var(--border); padding-top: 10px; line-height: 1.7; }
+
+  .toggle-section { max-width: 640px; margin: 0 auto; padding: 0 1.5rem 1.5rem; animation: fadeUp 0.5s 0.2s ease both; }
+  .toggle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .toggle-card { background: #fff; border: 2px solid var(--border); border-radius: var(--radius); padding: 1.5rem 1rem; text-align: center; cursor: pointer; transition: border-color 0.18s, background 0.18s, transform 0.12s; user-select: none; }
+  .toggle-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+  .toggle-card.active-need { border-color: var(--teal-600); background: var(--teal-50); }
+  .toggle-card.active-give { border-color: var(--blue-600); background: var(--blue-50); }
+  .toggle-emoji { font-size: 32px; margin-bottom: 8px; }
+  .toggle-en { font-size: 16px; font-weight: 600; color: var(--text); }
+  .toggle-ar { font-family: 'Amiri', serif; font-size: 14px; color: var(--text-muted); direction: rtl; margin-top: 2px; }
+
+  .panel-wrap { max-width: 640px; margin: 0 auto; padding: 0 1.5rem 4rem; }
+  .panel { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 1.75rem; display: none; animation: fadeUp 0.3s ease both; }
+  .panel.visible { display: block; }
+
+  .panel-heading { margin-bottom: 1.25rem; }
+  .panel-heading h2 { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .panel-heading h2 span { color: var(--teal-600); }
+  .panel-heading h2 span.blue { color: var(--blue-600); }
+  .panel-heading .ar { font-family: 'Amiri', serif; font-size: 15px; color: var(--text-muted); direction: rtl; margin-top: 3px; }
+
+  .field { margin-bottom: 1rem; }
+  .field label { display: block; font-size: 13px; font-weight: 500; color: var(--text-muted); margin-bottom: 5px; }
+  .field label .ar-label { font-family: 'Amiri', serif; color: var(--text-light); font-weight: 400; margin-left: 6px; }
+  .field input, .field select, .field textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--sand); transition: border-color 0.15s, box-shadow 0.15s; outline: none; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--teal-600); box-shadow: 0 0 0 3px rgba(15,110,86,0.1); background: #fff; }
+  .field textarea { min-height: 85px; resize: vertical; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .pledge-note { background: var(--sand); border-radius: var(--radius-sm); padding: 0.85rem 1rem; font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem; }
+  .pledge-note .ar { font-family: 'Amiri', serif; font-size: 13px; direction: rtl; color: var(--text-light); margin-top: 6px; border-top: 1px solid var(--border); padding-top: 6px; }
+
+  .submit-btn { width: 100%; padding: 0.9rem; border: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; color: #fff; cursor: pointer; transition: opacity 0.15s, transform 0.1s; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
+  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:active { transform: scale(0.98); }
+  .btn-need { background: var(--teal-600); }
+  .btn-give { background: #25D366; }
+
+  footer { text-align: center; padding: 2rem 1.5rem; font-size: 12px; color: var(--text-light); border-top: 1px solid var(--border); background: #fff; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; } .how-steps { flex-direction: column; } .panel { padding: 1.25rem; } }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div>
+    <div class="logo">Can<span>Connect</span></div>
+    <div class="logo-ar">كان كونكت</div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-icon">♻️</div>
+  <h1>Cans into <span>care</span></h1>
+  <div class="hero-ar">علب الألومنيوم تتحول إلى دعم حقيقي</div>
+  <p>A free connector between people who want to help and those who need it — powered by recycling aluminum cans.</p>
+  <p class="arabic">جسر مجاني بين من يريد المساعدة ومن يحتاجها — عبر تدوير علب الألومنيوم وإرسال العائد مباشرةً.</p>
+</section>
+
+<div class="how-banner">
+  <div class="how-inner">
+    <div class="how-label">How it works / كيف يعمل</div>
+    <div class="how-steps">
+      <div class="how-step"><strong>1. Match</strong>Helpers are connected to individuals, families, or organizations in need.</div>
+      <div class="how-step"><strong>2. Collect</strong>Helpers gather aluminum cans from home, work, or their community.</div>
+      <div class="how-step"><strong>3. Send</strong>Cans are recycled locally and the money goes directly to the recipient.</div>
+    </div>
+    <div class="how-ar">يجمع المتطوعون علب الألومنيوم ويعيدون تدويرها ويرسلون العائد مباشرةً لمن يحتاجه — بدون وسيط ولا ميزانية كبيرة.</div>
+  </div>
+</div>
+
+<div class="toggle-section">
+  <div class="toggle-grid">
+    <div class="toggle-card" id="btn-need" onclick="showPanel('need')">
+      <div class="toggle-emoji">🙏</div>
+      <div class="toggle-en">I need help</div>
+      <div class="toggle-ar">أحتاج مساعدة</div>
+    </div>
+    <div class="toggle-card" id="btn-give" onclick="showPanel('give')">
+      <div class="toggle-emoji">🤝</div>
+      <div class="toggle-en">I want to help</div>
+      <div class="toggle-ar">أريد المساعدة</div>
+    </div>
+  </div>
+</div>
+
+<div class="panel-wrap">
+
+  <div class="panel" id="panel-need">
+    <div class="panel-heading">
+      <h2>Request <span>support</span></h2>
+      <div class="ar">طلب الدعم — أخبرنا عن احتياجاتك</div>
+    </div>
+
+    <div class="field">
+      <label>I am a… <span class="ar-label">/ أنا…</span></label>
+      <select id="need-type">
+        <option value="">Select / اختر</option>
+        <option>Individual / فرد</option>
+        <option>Family / عائلة</option>
+        <option>Refugee / لاجئ</option>
+        <option>School / مدرسة</option>
+        <option>Nonprofit organization / منظمة غير ربحية</option>
+        <option>Community group / مجموعة مجتمعية</option>
+        <option>Refugee camp / مخيم لاجئين</option>
+        <option>Other / أخرى</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Name or organization <span class="ar-label">/ الاسم</span></label>
+        <input type="text" id="need-name" placeholder="Your name or group name" />
+      </div>
+      <div class="field">
+        <label>Number of people <span class="ar-label">/ عدد الأشخاص</span></label>
+        <input type="number" id="need-count" placeholder="e.g. 4 or 200" min="1" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Location <span class="ar-label">/ الموقع</span></label>
+      <input type="text" id="need-location" placeholder="City, country, or camp name / المدينة أو اسم المخيم" />
+    </div>
+
+    <div class="field">
+      <label>Your WhatsApp or contact <span class="ar-label">/ واتساب أو بريد</span></label>
+      <input type="text" id="need-contact" placeholder="WhatsApp number or email" />
+    </div>
+
+    <div class="field">
+      <label>Anything else? <span class="ar-label">/ ملاحظات</span></label>
+      <textarea id="need-notes" placeholder="Brief description of your situation… / وصف موجز…"></textarea>
+    </div>
+
+    <div class="pledge-note">
+      🔒 Your message goes directly to the organizer via WhatsApp.
+      <div class="ar">رسالتك تصل مباشرةً للمنسّق عبر واتساب.</div>
+    </div>
+    <div class="pledge-note">
+      ⛪ Want to find a church in your state that collects cans for those in need? Contact me at <a href="mailto:markformohammed@gmail.com">markformohammed@gmail.com</a>
+      <div class="ar">هل تريد الحصول على معلومات الاتصال بكنيسة في ولايتك تجمع العلب لمن يحتاج؟ تواصل معي على <a href="mailto:markformohammed@gmail.com" style="direction:ltr;display:inline-block;">markformohammed@gmail.com</a></div>
+    </div>
+
+    <a class="submit-btn btn-need" id="need-wa-btn" href="#" onclick="sendWhatsApp('need'); return false;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.107 1.51 5.845L.057 23.428a.5.5 0 0 0 .61.61l5.638-1.453A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.653-.523-5.166-1.432l-.369-.22-3.821.984.999-3.75-.241-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Send via WhatsApp / أرسل عبر واتساب
+    </a>
+  </div>
+
+  <div class="panel" id="panel-give">
+    <div class="panel-heading">
+      <h2>Volunteer to <span class="blue">help</span></h2>
+      <div class="ar">تطوع لمساعدة الآخرين — اجمع العلب وأرسل الدعم</div>
+    </div>
+
+    <div class="field">
+      <label>I am a… <span class="ar-label">/ أنا…</span></label>
+      <select id="give-type">
+        <option value="">Select / اختر</option>
+        <option>Individual / فرد</option>
+        <option>Business / شركة</option>
+        <option>School / مدرسة</option>
+        <option>Church / faith group / مجموعة دينية</option>
+        <option>Nonprofit / منظمة غير ربحية</option>
+        <option>Community group / مجموعة مجتمعية</option>
+        <option>Other / أخرى</option>
+      </select>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Name <span class="ar-label">/ الاسم</span></label>
+        <input type="text" id="give-name" placeholder="Your name or organization" />
+      </div>
+      <div class="field">
+        <label>Location <span class="ar-label">/ الموقع</span></label>
+        <input type="text" id="give-location" placeholder="City, country" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Your WhatsApp or contact <span class="ar-label">/ واتساب أو بريد</span></label>
+      <input type="text" id="give-contact" placeholder="WhatsApp number or email" />
+    </div>
+
+    <div class="field">
+      <label>Roughly how much can you collect per month? <span class="ar-label">/ الكمية الشهرية</span></label>
+      <select id="give-amount">
+        <option value="">Estimate / تقدير</option>
+        <option>A bag or two / كيس أو اثنان</option>
+        <option>Several bags / عدة أكياس</option>
+        <option>Large volume — business or school / كمية كبيرة</option>
+        <option>Not sure yet / غير متأكد بعد</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Notes <span class="ar-label">/ ملاحظات</span></label>
+      <textarea id="give-notes" placeholder="Anything else you'd like us to know… / أي شيء آخر…"></textarea>
+    </div>
+
+    <div class="pledge-note">
+      🤝 By sending this, you agree to collect cans, recycle them locally, and send the proceeds to your matched recipient. No fees. No middleman.
+      <div class="ar">بإرسال هذه الرسالة، تلتزم بجمع العلب وتدويرها وإرسال العائد للمستفيد. بدون رسوم.</div>
+    </div>
+    <div class="pledge-note">
+      ⛪ Want to find a church in your state that collects cans for those in need? Contact me at <a href="mailto:markformohammed@gmail.com">markformohammed@gmail.com</a>
+      <div class="ar">هل تريد الحصول على معلومات الاتصال بكنيسة في ولايتك تجمع العلب لمن يحتاج؟ تواصل معي على <a href="mailto:markformohammed@gmail.com" style="direction:ltr;display:inline-block;">markformohammed@gmail.com</a></div>
+    </div>
+
+    <a class="submit-btn btn-give" id="give-wa-btn" href="#" onclick="sendWhatsApp('give'); return false;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.117.549 4.107 1.51 5.845L.057 23.428a.5.5 0 0 0 .61.61l5.638-1.453A11.945 11.945 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.653-.523-5.166-1.432l-.369-.22-3.821.984.999-3.75-.241-.386A9.944 9.944 0 0 1 2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      Send via WhatsApp / أرسل عبر واتساب
+    </a>
+  </div>
+
+</div>
+
+<footer>
+  Can Connect &nbsp;·&nbsp; Free &amp; open &nbsp;·&nbsp; Connecting communities through recycling
+</footer>
+
+<script>
+  // *** REPLACE THIS WITH YOUR WHATSAPP NUMBER (include country code, no + or spaces) ***
+  var YOUR_WHATSAPP = '15411234567';
+
+  function showPanel(type) {
+    ['need','give'].forEach(function(p) {
+      document.getElementById('panel-' + p).classList.remove('visible');
+      document.getElementById('btn-' + p).classList.remove('active-need','active-give');
+    });
+    document.getElementById('panel-' + type).classList.add('visible');
+    document.getElementById('btn-' + type).classList.add('active-' + type);
+    setTimeout(function() {
+      document.getElementById('panel-' + type).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+  }
+
+  function sendWhatsApp(type) {
+    var msg = '';
+    if (type === 'need') {
+      var t = document.getElementById('need-type').value;
+      var n = document.getElementById('need-name').value;
+      var c = document.getElementById('need-count').value;
+      var l = document.getElementById('need-location').value;
+      var contact = document.getElementById('need-contact').value;
+      var notes = document.getElementById('need-notes').value;
+      msg = '🙏 *SUPPORT REQUEST — Can Connect*\n\n'
+          + '*Type:* ' + (t || 'Not specified') + '\n'
+          + '*Name:* ' + (n || 'Not specified') + '\n'
+          + '*People:* ' + (c || 'Not specified') + '\n'
+          + '*Location:* ' + (l || 'Not specified') + '\n'
+          + '*Contact:* ' + (contact || 'Not specified') + '\n'
+          + (notes ? '*Notes:* ' + notes : '');
+    } else {
+      var t = document.getElementById('give-type').value;
+      var n = document.getElementById('give-name').value;
+      var l = document.getElementById('give-location').value;
+      var contact = document.getElementById('give-contact').value;
+      var amt = document.getElementById('give-amount').value;
+      var notes = document.getElementById('give-notes').value;
+      msg = '🤝 *VOLUNTEER — Can Connect*\n\n'
+          + '*Type:* ' + (t || 'Not specified') + '\n'
+          + '*Name:* ' + (n || 'Not specified') + '\n'
+          + '*Location:* ' + (l || 'Not specified') + '\n'
+          + '*Contact:* ' + (contact || 'Not specified') + '\n'
+          + '*Monthly volume:* ' + (amt || 'Not specified') + '\n'
+          + (notes ? '*Notes:* ' + notes : '');
+    }
+    var url = 'https://wa.me/' + YOUR_WHATSAPP + '?text=' + encodeURIComponent(msg);
+    window.open(url, '_blank');
+  }
+</script>
+
+</body>
+</html>
